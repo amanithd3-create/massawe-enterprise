@@ -1,0 +1,86 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+enum Role { CUSTOMER ADMIN STAFF }
+enum OrderStatus { PENDING PAID PROCESSING FULFILLED CANCELLED REFUNDED }
+enum PaymentStatus { UNPAID PENDING PAID FAILED REFUNDED }
+model User {
+  id String @id @default(cuid())
+  name String
+  email String @unique
+  passwordHash String
+  role Role @default(CUSTOMER)
+  phone String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orders Order[]
+}
+model Product {
+  id String @id @default(cuid())
+  title String
+  slug String @unique
+  description String @default("")
+  sku String? @unique
+  price Int
+  compareAtPrice Int?
+  currency String @default("TZS")
+  stock Int @default(0)
+  active Boolean @default(true)
+  imageUrl String?
+  category String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  orderItems OrderItem[]
+  @@index([active, category])
+}
+model Discount {
+  id String @id @default(cuid())
+  code String @unique
+  percentOff Int?
+  amountOff Int?
+  active Boolean @default(true)
+  expiresAt DateTime?
+  usageLimit Int?
+  usedCount Int @default(0)
+  createdAt DateTime @default(now())
+}
+model Order {
+  id String @id @default(cuid())
+  orderNumber String @unique
+  userId String?
+  user User? @relation(fields: [userId], references: [id])
+  email String
+  customerName String
+  phone String?
+  address String
+  city String
+  country String @default("Tanzania")
+  subtotal Int
+  discount Int @default(0)
+  shipping Int @default(0)
+  total Int
+  currency String @default("TZS")
+  status OrderStatus @default(PENDING)
+  paymentStatus PaymentStatus @default(UNPAID)
+  paymentReference String? @unique
+  discountCode String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  items OrderItem[]
+  @@index([createdAt, status])
+}
+model OrderItem {
+  id String @id @default(cuid())
+  orderId String
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product Product @relation(fields: [productId], references: [id])
+  title String
+  sku String?
+  unitPrice Int
+  quantity Int
+}

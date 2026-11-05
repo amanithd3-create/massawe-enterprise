@@ -1,0 +1,12 @@
+import { Router } from "express";
+import { z } from "zod";
+import { prisma } from "../db.js";
+import { auth,admin } from "../middleware.js";
+const router=Router();
+const schema=z.object({title:z.string().min(2).max(160),slug:z.string().min(2).max(180).regex(/^[a-z0-9-]+$/),description:z.string().max(5000).optional(),sku:z.string().max(80).optional().nullable(),price:z.number().int().nonnegative(),compareAtPrice:z.number().int().nonnegative().optional().nullable(),stock:z.number().int().nonnegative(),active:z.boolean().optional(),imageUrl:z.string().url().optional().or(z.literal("")),category:z.string().max(80).optional()});
+router.get("/",async(req,res)=>{const products=await prisma.product.findMany({where:{active:true,...(req.query.category?{category:String(req.query.category)}:{})},orderBy:{createdAt:"desc"}});res.json({products});});
+router.get("/admin/all",auth(),admin,async(req,res)=>{res.json({products:await prisma.product.findMany({orderBy:{createdAt:"desc"}})});});
+router.post("/",auth(),admin,async(req,res)=>{const p=schema.safeParse(req.body);if(!p.success)return res.status(400).json({error:"Invalid product details",details:p.error.flatten()});const product=await prisma.product.create({data:p.data});res.status(201).json({product});});
+router.patch("/:id",auth(),admin,async(req,res)=>{const p=schema.partial().safeParse(req.body);if(!p.success)return res.status(400).json({error:"Invalid product details"});const product=await prisma.product.update({where:{id:req.params.id},data:p.data});res.json({product});});
+router.delete("/:id",auth(),admin,async(req,res)=>{await prisma.product.delete({where:{id:req.params.id}});res.status(204).end();});
+export default router;
