@@ -7,6 +7,7 @@ const headers=()=>({"Content-Type":"application/json",...(token?{Authorization:`
 async function api(path,options={}){const r=await fetch(API+"/api"+path,{...options,headers:{...headers(),...(options.headers||{})}});const d=r.status===204?{}:await r.json();if(!r.ok)throw Error(d.error||"Request failed");return d}
 function flash(s){setNotice(s);setTimeout(()=>setNotice(""),3500)}
 async function load(){try{const p=await api("/products");setProducts(p.products);if(token){const [o,d,c,ds]=await Promise.all([api("/orders"),api("/admin/dashboard"),api("/admin/customers"),api("/admin/discounts")]);setOrders(o.orders);setDashboard(d);setCustomers(c.customers);setDiscounts(ds.discounts)}}catch(e){if(token&&/sign in|session/i.test(e.message)){logout()}else flash(e.message)}}
+               
 useEffect(()=>{load()},[token]);
 function logout(){setToken("");setUser(null);localStorage.removeItem("me_token");localStorage.removeItem("me_user");setPage("Overview")}
 async function submitAuth(e){
