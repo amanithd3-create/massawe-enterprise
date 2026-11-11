@@ -9,7 +9,55 @@ function flash(s){setNotice(s);setTimeout(()=>setNotice(""),3500)}
 async function load(){try{const p=await api("/products");setProducts(p.products);if(token){const [o,d,c,ds]=await Promise.all([api("/orders"),api("/admin/dashboard"),api("/admin/customers"),api("/admin/discounts")]);setOrders(o.orders);setDashboard(d);setCustomers(c.customers);setDiscounts(ds.discounts)}}catch(e){if(token&&/sign in|session/i.test(e.message)){logout()}else flash(e.message)}}
 useEffect(()=>{load()},[token]);
 function logout(){setToken("");setUser(null);localStorage.removeItem("me_token");localStorage.removeItem("me_user");setPage("Overview")}
-async function submitAuth(e){e.preventDefault();setBusy(true);try{const d=await api("/auth/"+authMode,{method:"POST",body:JSON.stringify(authForm)});setToken(d.token);setUser(d.user);localStorage.setItem("me_token",d.token);localStorage.setItem("me_user",JSON.stringify(d.user));flash("Welcome to Massawe Enteprice")}catch(e){flash(e.message)}finally{setBusy(false)}}
+async function submitAuth(e){
+  e.preventDefault();
+  setBusy(true);
+
+  try {
+    if(authMode==="register"){
+      const {data,error}=await supabase.auth.signUp({
+        email:authForm.email,
+        password:authForm.password,
+        options:{
+          data:{name:authForm.name}
+        }
+      });
+
+      if(error) throw error;
+
+      if(!data.session){
+        flash("Account created! Check your email to verify it.");
+        setAuthMode("login");
+        return;
+      }
+    } else {
+      const {error}=await supabase.auth.signInWithPassword({
+        email:authForm.email,
+        password:authForm.password
+      });
+
+      if(error) throw error;
+    }
+
+    const {data:{session}}=await supabase.auth.getSession();
+
+    if(session){
+      setToken(session.access_token);
+      setUser({
+        id:session.user.id,
+        email:session.user.email,
+        name:session.user.user_metadata?.name || "Customer",
+        role:"CUSTOMER"
+      });
+      flash("Welcome to Massawe Enterprise!");
+    }
+
+  } catch(error){
+    flash(error.message);
+  } finally {
+    setBusy(false);
+  }
+        }
 function addCart(p){const next=[...cart];const found=next.find(x=>x.productId===p.id);if(found)found.quantity++;else next.push({productId:p.id,title:p.title,price:p.price,quantity:1});setCart(next);localStorage.setItem("me_cart",JSON.stringify(next));flash("Added to cart")}
 async function placeOrder(e){e.preventDefault();setBusy(true);try{const d=await api("/orders",{method:"POST",body:JSON.stringify({...checkout,items:cart.map(x=>({productId:x.productId,quantity:x.quantity}))})});flash(d.error||"Order saved. Payment is not configured yet.");if(d.orderNumber)flash(`Order ${d.orderNumber} saved. ${d.error||"Awaiting payment setup."}`);setCart([]);localStorage.removeItem("me_cart");setModal("");load()}catch(e){flash(e.message)}finally{setBusy(false)}}
 function openProduct(p=null){setEditing(p);setForm(p?{...p}:{title:"",slug:"",description:"",sku:"",price:0,stock:0,active:true,imageUrl:"",category:""});setModal("product")}
