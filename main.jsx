@@ -1,4 +1,5 @@
 import React,{useEffect,useMemo,useState} from "react";import{createRoot}from"react-dom/client";import{ShoppingBag,LayoutDashboard,Package,Users,ClipboardList,Percent,ChartNoAxesCombined,Settings,Store,Menu,Search,Plus,LogOut,Trash2,Edit,ArrowUpRight,ShoppingCart,Boxes,Wallet,Globe,Plug,Tag,RefreshCw,ChevronRight,X,CheckCircle,AlertCircle}from"lucide-react";import"./style.css";
+const SUPABASE_FUNCTIONS = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1`;
 import { supabase } from "./supabase.js";
 const API=import.meta.env.VITE_API_URL||"";
 const money=n=>new Intl.NumberFormat("en-TZ",{style:"currency",currency:"TZS",maximumFractionDigits:0}).format(n||0);
