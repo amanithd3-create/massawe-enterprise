@@ -5,5 +5,12 @@ const supabaseAnonKey = 'sb_publishable_CF6vxoAsw6zASf8J4DLD1g_cVRrbCOj'
 
 export const supabase = createClient(
   supabaseUrl,
-  supabaseAnonKey
+  supabaseAnonKey,
+  {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true
+    }
+  }
 )
