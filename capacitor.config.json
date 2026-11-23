@@ -1,0 +1,8 @@
+{
+  "appId": "com.massawe.enterprise",
+  "appName": "MASSAWE ENTERPRISE",
+  "webDir": "dist",
+  "server": {
+    "androidScheme": "https"
+  }
+}
