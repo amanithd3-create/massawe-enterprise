@@ -202,3 +202,24 @@ tbody tr:hover td{background:#fcfaff}
 .crypto-settlement>small{display:block;color:#e5dff1;font-size:9px;line-height:1.6}
 @media(max-width:850px){.payment-preview{margin:38px 18px;padding:25px 18px}.payment-method-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){.payment-method-grid{grid-template-columns:1fr 1fr;gap:8px}.payment-method-grid article{padding:13px;min-height:160px}.payment-method-grid b{font-size:11px}.payment-method-grid small{font-size:9px}.crypto-settlement{padding:15px}}
+
+
+/* MASSAWE AI floating marketplace guide */
+.massawe-ai-widget{position:fixed;right:20px;bottom:20px;z-index:30;font-family:inherit}
+.massawe-ai-launcher{display:flex;align-items:center;gap:8px;border:0;border-radius:30px;padding:12px 16px;background:linear-gradient(110deg,#6741c8,#a044a7 60%,#f06b56);color:white;box-shadow:0 10px 30px #49307844;cursor:pointer}
+.massawe-ai-launcher>span{font-size:19px}.massawe-ai-launcher b{font-size:11px;letter-spacing:.4px}.massawe-ai-launcher small{font-size:9px;background:#ffffff25;padding:4px 7px;border-radius:12px}
+.massawe-ai-panel{position:absolute;right:0;bottom:58px;width:min(360px,calc(100vw - 28px));height:490px;max-height:calc(100vh - 110px);display:flex;flex-direction:column;overflow:hidden;background:#fff;border:1px solid #e8def7;border-radius:18px;box-shadow:0 20px 65px #29174b38}
+.massawe-ai-panel>header{display:flex;justify-content:space-between;align-items:center;padding:15px 17px;background:linear-gradient(110deg,#30234e,#6741c8,#a044a7);color:white}
+.massawe-ai-panel>header b,.massawe-ai-panel>header small{display:block}.massawe-ai-panel>header b{font-size:12px}.massawe-ai-panel>header small{font-size:9px;color:#eee4ff;margin-top:4px}
+.massawe-ai-panel>header button{border:0;background:#ffffff20;color:white;border-radius:8px;width:28px;height:28px;font-size:21px;cursor:pointer}
+.massawe-ai-status{padding:8px 13px;background:#fff4df;color:#9a6124;font-size:8px;font-weight:850;letter-spacing:.7px}
+.massawe-ai-messages{flex:1;overflow:auto;padding:13px;background:linear-gradient(150deg,#fbf9ff,#fff8f3)}
+.massawe-ai-messages p{max-width:90%;padding:10px 12px;border-radius:12px;font-size:11px;line-height:1.6;margin:0 0 10px;white-space:pre-wrap}
+.massawe-ai-messages p.assistant{background:white;color:#4d4260;border:1px solid #eee7f6;border-top-left-radius:4px}
+.massawe-ai-messages p.user{margin-left:auto;background:#6741c8;color:white;border-top-right-radius:4px}
+.massawe-ai-quick{display:flex;gap:6px;flex-wrap:wrap;padding:8px 10px;border-top:1px solid #f0ebf6}
+.massawe-ai-quick button{border:1px solid #e5daf4;background:#f7f2ff;color:#6243a3;border-radius:20px;padding:7px 9px;font-size:9px;cursor:pointer}
+.massawe-ai-panel form{display:flex;gap:7px;padding:10px;border-top:1px solid #eee8f5;background:white}
+.massawe-ai-panel form input{flex:1;min-width:0;border:1px solid #e6dfef;border-radius:9px;padding:10px;font-size:11px;outline:0}
+.massawe-ai-panel form button{width:39px;border:0;border-radius:9px;background:#6741c8;color:white;font-size:17px;cursor:pointer}
+@media(max-width:520px){.massawe-ai-widget{right:12px;bottom:12px}.massawe-ai-launcher{padding:11px 13px}.massawe-ai-panel{bottom:55px}}
