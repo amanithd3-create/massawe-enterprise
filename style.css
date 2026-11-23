@@ -183,3 +183,22 @@ tbody tr:hover td{background:#fcfaff}
 
 /* Password visibility toggle */
 .password-field{position:relative;width:100%;display:flex;align-items:center}.auth-modal .password-field input{width:100%;padding-right:48px}.password-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:34px;height:34px;border:0;border-radius:8px;background:transparent;color:#786b91;display:grid;place-items:center;cursor:pointer}.password-toggle:hover{background:#f1edfa;color:#6841c8}.password-toggle:focus-visible{outline:2px solid #7654df;outline-offset:2px}
+
+
+/* Payment methods preview — clearly marked as not yet connected */
+.payment-preview{max-width:1320px;margin:58px auto;padding:34px 32px;border:1px solid #e8def7;border-radius:22px;background:linear-gradient(125deg,#f1eaff,#fff1e8 52%,#e5faf3)}
+.payment-preview-head{text-align:center;margin:0 auto 24px;max-width:650px}
+.payment-preview-head>span{font-size:10px;font-weight:850;letter-spacing:1.8px;color:#8053c4}
+.payment-preview-head h2{font-size:clamp(25px,3vw,34px);margin:9px 0;color:#30234e}
+.payment-preview-head p{font-size:12px;line-height:1.7;color:#71677f}
+.payment-method-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.payment-method-grid article{min-height:150px;padding:18px;border:1px solid #e9e0f3;border-radius:15px;background:#ffffffdc;display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.payment-method-grid article>span{font-size:26px}.payment-method-grid b{font-size:13px;color:#35264f}
+.payment-method-grid small{font-size:10px;line-height:1.6;color:#756d80}
+.payment-method-grid em{margin-top:auto;font-size:9px;font-style:normal;font-weight:800;color:#a15b24;background:#fff0d9;padding:6px 8px;border-radius:20px}
+.crypto-settlement{margin-top:15px;padding:17px 19px;border-radius:14px;background:#30234e;color:white}
+.crypto-settlement>b{font-size:12px}.crypto-settlement>div{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}
+.crypto-settlement>div span{padding:9px 12px;border-radius:9px;background:#ffffff18;font-size:10px}
+.crypto-settlement>small{display:block;color:#e5dff1;font-size:9px;line-height:1.6}
+@media(max-width:850px){.payment-preview{margin:38px 18px;padding:25px 18px}.payment-method-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.payment-method-grid{grid-template-columns:1fr 1fr;gap:8px}.payment-method-grid article{padding:13px;min-height:160px}.payment-method-grid b{font-size:11px}.payment-method-grid small{font-size:9px}.crypto-settlement{padding:15px}}
