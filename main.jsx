@@ -21,7 +21,7 @@ async function load() {
       price: p.price_tzs,
       stock: p.inventory_quantity,
       active: p.status === "active",
-      category: p.product_type || "",
+      category: p.category || p.product_type || "",
       imageUrl: p.image_url || ""
     })));
 
@@ -113,10 +113,13 @@ async function saveProduct(e) {
   try {
     const payload = {
       title: form.title,
+      slug: form.slug || form.title.toLowerCase().trim().replace(/[^a-z0-9]+/g,"-"),
       business_id: form.business_id || null,
       description: form.description || null,
       sku: form.sku || null,
       product_type: form.category || null,
+      category: form.category || null,
+      image_url: form.imageUrl || null,
       price_tzs: Number(form.price),
       inventory_quantity: Number(form.stock),
       status: form.active ? "active" : "draft"
