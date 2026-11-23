@@ -205,7 +205,7 @@ tbody tr:hover td{background:#fcfaff}
 
 
 /* MASSAWE AI floating marketplace guide */
-.massawe-ai-widget{position:fixed;right:20px;bottom:20px;z-index:30;font-family:inherit}
+.massawe-ai-widget{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:99999;font-family:inherit;display:block;visibility:visible;opacity:1;pointer-events:auto}
 .massawe-ai-launcher{display:flex;align-items:center;gap:8px;border:0;border-radius:30px;padding:12px 16px;background:linear-gradient(110deg,#6741c8,#a044a7 60%,#f06b56);color:white;box-shadow:0 10px 30px #49307844;cursor:pointer}
 .massawe-ai-launcher>span{font-size:19px}.massawe-ai-launcher b{font-size:11px;letter-spacing:.4px}.massawe-ai-launcher small{font-size:9px;background:#ffffff25;padding:4px 7px;border-radius:12px}
 .massawe-ai-panel{position:absolute;right:0;bottom:58px;width:min(360px,calc(100vw - 28px));height:490px;max-height:calc(100vh - 110px);display:flex;flex-direction:column;overflow:hidden;background:#fff;border:1px solid #e8def7;border-radius:18px;box-shadow:0 20px 65px #29174b38}
@@ -222,4 +222,4 @@ tbody tr:hover td{background:#fcfaff}
 .massawe-ai-panel form{display:flex;gap:7px;padding:10px;border-top:1px solid #eee8f5;background:white}
 .massawe-ai-panel form input{flex:1;min-width:0;border:1px solid #e6dfef;border-radius:9px;padding:10px;font-size:11px;outline:0}
 .massawe-ai-panel form button{width:39px;border:0;border-radius:9px;background:#6741c8;color:white;font-size:17px;cursor:pointer}
-@media(max-width:520px){.massawe-ai-widget{right:12px;bottom:12px}.massawe-ai-launcher{padding:11px 13px}.massawe-ai-panel{bottom:55px}}
+@media(max-width:520px){.massawe-ai-widget{right:12px;bottom:calc(12px + env(safe-area-inset-bottom))}.massawe-ai-launcher{min-height:48px;padding:13px 16px}.massawe-ai-launcher{padding:11px 13px}.massawe-ai-panel{bottom:55px}}
