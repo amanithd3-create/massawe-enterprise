@@ -129,7 +129,8 @@ async function submitAuth(e){
     setBusy(false);
   }
         }
-function toggleSaved(id){const next=savedProducts.includes(id)?savedProducts.filter(x=>x!==id):[...savedProducts,id];setSavedProducts(next);localStorage.setItem("me_saved_products",JSON.stringify(next));flash(savedProducts.includes(id)?"Removed from saved items":"Saved for later")}\nfunction addCart(p){const next=[...cart];const found=next.find(x=>x.productId===p.id);if(found)found.quantity++;else next.push({productId:p.id,title:p.title,price:p.price,quantity:1});setCart(next);localStorage.setItem("me_cart",JSON.stringify(next));flash("Added to cart")}
+function toggleSaved(id){const next=savedProducts.includes(id)?savedProducts.filter(x=>x!==id):[...savedProducts,id];setSavedProducts(next);localStorage.setItem("me_saved_products",JSON.stringify(next));flash(savedProducts.includes(id)?"Removed from saved items":"Saved for later")}
+function addCart(p){const next=[...cart];const found=next.find(x=>x.productId===p.id);if(found)found.quantity++;else next.push({productId:p.id,title:p.title,price:p.price,quantity:1});setCart(next);localStorage.setItem("me_cart",JSON.stringify(next));flash("Added to cart")}
 async function placeOrder(e){e.preventDefault();setBusy(true);try{const d=await api("/orders",{method:"POST",body:JSON.stringify({...checkout,items:cart.map(x=>({productId:x.productId,quantity:x.quantity}))})});flash(d.error||"Order saved. Payment is not configured yet.");if(d.orderNumber)flash(`Order ${d.orderNumber} saved. ${d.error||"Awaiting payment setup."}`);setCart([]);localStorage.removeItem("me_cart");setModal("");load()}catch(e){flash(e.message)}finally{setBusy(false)}}
 function openProduct(p=null){setEditing(p);setForm(p?{...p}:{title:"",slug:"",description:"",sku:"",price:0,stock:0,active:true,imageUrl:"",category:"",business_id:""});setModal("product")}
 async function saveProduct(e) {
