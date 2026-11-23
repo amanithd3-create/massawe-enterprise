@@ -87,7 +87,7 @@ async function submitAuth(e){
         id:session.user.id,
         email:session.user.email,
         name:session.user.user_metadata?.name || "Customer",
-        role:"CUSTOMER"
+        role:(await supabase.from("profiles").select("role").eq("id",session.user.id).maybeSingle()).data?.role || "customer"
       });
       flash("Welcome to Massawe Enterprise!");
     }
