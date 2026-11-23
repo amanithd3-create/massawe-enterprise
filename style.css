@@ -15,3 +15,18 @@
 .market-join{max-width:1320px;margin:0 auto 55px;padding:30px 32px;border:1px solid #dfe9e0;border-radius:15px;background:#eef5ee;display:flex;justify-content:space-between;align-items:center;gap:20px}.market-join h2{font-size:25px;margin:8px 0;color:#1c402a}.market-join p{font-size:12px;color:#6e7e70;max-width:560px;line-height:1.6;margin:0}.market-footer>div:last-child{display:flex;gap:12px}.market-footer small{display:block;color:#c3d6c8;font-size:10px;margin-top:5px}
 @media(max-width:850px){.market-hero{gap:5px}.hero-art{flex-basis:210px;transform:scale(.8);margin-right:-20px}.market-promo,.market-benefits,.market-join{margin-left:18px;margin-right:18px}.market-benefits{padding:0}.market-promo,.market-join{padding:22px}}
 @media(max-width:600px){.market-hero{display:block;padding:55px 22px 25px}.hero-art{height:190px;margin:15px auto 0;transform:scale(.72);transform-origin:top center}.hero-trust{gap:10px;font-size:9px}.market-promo,.market-join{align-items:flex-start;flex-direction:column}.market-promo .primary,.market-join .primary{width:100%;justify-content:center}.market-benefits{grid-template-columns:1fr;gap:8px}.market-benefits>div{padding:12px}.market-join h2{font-size:22px}.market-footer>div:last-child{flex-wrap:wrap}}
+
+
+/* Sign-in and registration polish */
+.auth-modal{border:1px solid #dce8de;border-radius:20px;padding:34px;background:radial-gradient(circle at 100% 0,#e7f3e9 0,transparent 34%),#fff;box-shadow:0 28px 90px #0e2b1b38}
+.auth-modal .logo.large{border-radius:14px;box-shadow:0 8px 20px #174d3526}
+.auth-modal .overline{color:#477454;letter-spacing:2px}
+.auth-modal h1{font-size:27px;letter-spacing:-.8px;color:#193b28}
+.auth-modal .muted{font-size:12px;line-height:1.6}
+.auth-modal form{gap:12px;margin-top:25px}
+.auth-modal input{min-height:46px;padding:13px 14px;border-radius:9px;background:#fbfdfb;border-color:#dce7dd;font-size:12px}
+.auth-modal input:focus{border-color:#6b9b77;box-shadow:0 0 0 3px #dceee0;outline:0}
+.auth-modal .primary.full{min-height:46px;border-radius:9px;font-size:12px;box-shadow:0 8px 18px #174d3520}
+.auth-modal .link{padding:8px}
+.auth-close{cursor:pointer}
+@media(max-width:560px){.auth-modal{padding:27px 22px;border-radius:17px}.auth-modal h1{font-size:24px}}
