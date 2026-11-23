@@ -7,7 +7,45 @@ function App(){const[token,setToken]=useState(localStorage.getItem("me_token")||
 const headers=()=>({"Content-Type":"application/json",...(token?{Authorization:`Bearer ${token}`}:{})});
 async function api(path,options={}){const r=await fetch(API+"/api"+path,{...options,headers:{...headers(),...(options.headers||{})}});const d=r.status===204?{}:await r.json();if(!r.ok)throw Error(d.error||"Request failed");return d}
 function flash(s){setNotice(s);setTimeout(()=>setNotice(""),3500)}
-async function load(){try{const p=await api("/products");setProducts(p.products);if(token){const [o,d,c,ds]=await Promise.all([api("/orders"),api("/admin/dashboard"),api("/admin/customers"),api("/admin/discounts")]);setOrders(o.orders);setDashboard(d);setCustomers(c.customers);setDiscounts(ds.discounts)}}catch(e){if(token&&/sign in|session/i.test(e.message)){logout()}else flash(e.message)}}
+async function load() {
+  try {
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    setProducts((data || []).map(p => ({
+      ...p,
+      price: p.price_tzs,
+      stock: p.inventory_quantity,
+      active: p.status === "active",
+      category: p.product_type || "",
+      imageUrl: ""
+    })));
+
+    if (token) {
+      try {
+        const [o,d,c,ds] = await Promise.all([
+          api("/orders"),
+          api("/admin/dashboard"),
+          api("/admin/customers"),
+          api("/admin/discounts")
+        ]);
+
+        setOrders(o.orders || []);
+        setDashboard(d || {});
+        setCustomers(c.customers || []);
+        setDiscounts(ds.discounts || []);
+      } catch (error) {
+        console.warn("Other dashboard services:", error.message);
+      }
+    }
+  } catch (error) {
+    flash(error.message);
+  }
+}
                
 useEffect(()=>{load()},[token]);
 function logout(){setToken("");setUser(null);localStorage.removeItem("me_token");localStorage.removeItem("me_user");setPage("Overview")}
@@ -63,8 +101,63 @@ async function submitAuth(e){
 function addCart(p){const next=[...cart];const found=next.find(x=>x.productId===p.id);if(found)found.quantity++;else next.push({productId:p.id,title:p.title,price:p.price,quantity:1});setCart(next);localStorage.setItem("me_cart",JSON.stringify(next));flash("Added to cart")}
 async function placeOrder(e){e.preventDefault();setBusy(true);try{const d=await api("/orders",{method:"POST",body:JSON.stringify({...checkout,items:cart.map(x=>({productId:x.productId,quantity:x.quantity}))})});flash(d.error||"Order saved. Payment is not configured yet.");if(d.orderNumber)flash(`Order ${d.orderNumber} saved. ${d.error||"Awaiting payment setup."}`);setCart([]);localStorage.removeItem("me_cart");setModal("");load()}catch(e){flash(e.message)}finally{setBusy(false)}}
 function openProduct(p=null){setEditing(p);setForm(p?{...p}:{title:"",slug:"",description:"",sku:"",price:0,stock:0,active:true,imageUrl:"",category:""});setModal("product")}
-async function saveProduct(e){e.preventDefault();setBusy(true);try{const payload={...form,price:Number(form.price),stock:Number(form.stock),active:!!form.active};await api(editing?"/products/"+editing.id:"/products",{method:editing?"PATCH":"POST",body:JSON.stringify(payload)});flash("Product saved");setModal("");load()}catch(e){flash(e.message)}finally{setBusy(false)}}
-async function deleteProduct(id){if(!confirm("Delete this product?"))return;try{await api("/products/"+id,{method:"DELETE"});flash("Product deleted");load()}catch(e){flash(e.message)}}
+async function saveProduct(e) {
+  e.preventDefault();
+  setBusy(true);
+
+  try {
+    const payload = {
+      title: form.title,
+      description: form.description || null,
+      sku: form.sku || null,
+      product_type: form.category || null,
+      price_tzs: Number(form.price),
+      inventory_quantity: Number(form.stock),
+      status: form.active ? "active" : "draft"
+    };
+
+    const result = editing
+      ? await supabase
+          .from("products")
+          .update(payload)
+          .eq("id", editing.id)
+          .select()
+      : await supabase
+          .from("products")
+          .insert(payload)
+          .select();
+
+    if (result.error) throw result.error;
+
+    flash("Product saved successfully!");
+    setModal("");
+    setEditing(null);
+    await load();
+
+  } catch (error) {
+    flash(error.message);
+  } finally {
+    setBusy(false);
+  }
+}
+async function deleteProduct(id) {
+  if (!confirm("Delete this product?")) return;
+
+  try {
+    const { error } = await supabase
+      .from("products")
+      .delete()
+      .eq("id", id);
+
+    if (error) throw error;
+
+    flash("Product deleted successfully!");
+    await load();
+
+  } catch (error) {
+    flash(error.message);
+  }
+}
 async function updateOrder(id,status){try{await api("/orders/"+id+"/status",{method:"PATCH",body:JSON.stringify({status})});flash("Order updated");load()}catch(e){flash(e.message)}}
 async function createDiscount(e){e.preventDefault();try{await api("/admin/discounts",{method:"POST",body:JSON.stringify({code:form.code,percentOff:Number(form.percentOff)})});flash("Discount created");setModal("");load()}catch(e){flash(e.message)}}
 const nav=[["Overview",LayoutDashboard],["Orders",ClipboardList],["Products",Package],["Customers",Users],["Discounts",Percent],["Analytics",ChartNoAxesCombined],["Marketing",Globe],["Markets",Store],["Finance",Wallet],["Apps",Plug],["Online Store",ShoppingBag],["Point of Sale",Boxes],["Settings",Settings]];
