@@ -53,7 +53,33 @@ async function load() {
 }
                
 useEffect(()=>{load()},[token]);
-async function askMassaweAI(e){e.preventDefault();const q=assistantInput.trim();if(!q||busy)return;setAssistantInput("");setAssistantMessages(m=>[...m,{role:"user",text:q},{role:"assistant",text:"Thinking…"}]);try{const {data:{session}}=await supabase.auth.getSession();if(!session)throw new Error("Please sign in or create an account to chat with the live MASSAWE AI assistant.");const history=assistantMessages.slice(-8).map(m=>({role:m.role,text:m.text}));const {data,error}=await supabase.functions.invoke("massawe-ai",{body:{message:q,history}});if(error)throw error;if(data?.error)throw new Error(data.error);setAssistantMessages(m=>[...m.slice(0,-1),{role:"assistant",text:data.answer||"I couldn't answer that just now. Please try again."}]);}catch(error){setAssistantMessages(m=>[...m.slice(0,-1),{role:"assistant",text:error.message||"MASSAWE AI is temporarily unavailable. Please try again."}]);}}function logout(){setToken("");setUser(null);localStorage.removeItem("me_token");localStorage.removeItem("me_user");setPage("Overview")}
+
+// Keep the signed-in state in sync with Supabase's persistent session.
+useEffect(()=>{
+  const {data:{subscription}}=supabase.auth.onAuthStateChange((event,session)=>{
+    if(session){
+      setToken(session.access_token);
+      setUser(previous=>{
+        const next={
+          id:session.user.id,
+          email:session.user.email,
+          name:session.user.user_metadata?.name || previous?.name || "Customer",
+          role:previous?.role || "customer"
+        };
+        localStorage.setItem("me_token",session.access_token);
+        localStorage.setItem("me_user",JSON.stringify(next));
+        return next;
+      });
+    }else if(event==="SIGNED_OUT"){
+      setToken("");
+      setUser(null);
+      localStorage.removeItem("me_token");
+      localStorage.removeItem("me_user");
+    }
+  });
+  return ()=>subscription.unsubscribe();
+},[]);
+async function askMassaweAI(e){e.preventDefault();const q=assistantInput.trim();if(!q||busy)return;setAssistantInput("");setAssistantMessages(m=>[...m,{role:"user",text:q},{role:"assistant",text:"Thinking…"}]);try{const {data:{session}}=await supabase.auth.getSession();if(!session)throw new Error("Please sign in or create an account to chat with the live MASSAWE AI assistant.");const history=assistantMessages.slice(-8).map(m=>({role:m.role,text:m.text}));const {data,error}=await supabase.functions.invoke("massawe-ai",{body:{message:q,history}});if(error)throw error;if(data?.error)throw new Error(data.error);setAssistantMessages(m=>[...m.slice(0,-1),{role:"assistant",text:data.answer||"I couldn't answer that just now. Please try again."}]);}catch(error){setAssistantMessages(m=>[...m.slice(0,-1),{role:"assistant",text:error.message||"MASSAWE AI is temporarily unavailable. Please try again."}]);}}async function logout(){const {error}=await supabase.auth.signOut();if(error){flash(error.message);return;}setToken("");setUser(null);localStorage.removeItem("me_token");localStorage.removeItem("me_user");setPage("Overview");flash("You have signed out.")}
 async function submitAuth(e){
   e.preventDefault();
   setBusy(true);
