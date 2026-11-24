@@ -254,3 +254,46 @@ tbody tr:hover td{background:#fcfaff}
 .connection-buttons{display:flex;gap:7px;flex-wrap:wrap}
 .connection-hub .count{display:inline-flex;align-items:center;justify-content:center;min-width:24px;padding:3px 8px;border-radius:20px;background:#edf7ef;color:#23613c;font-size:12px}
 @media(max-width:760px){.connection-intro{align-items:flex-start;flex-direction:column}.connection-columns{grid-template-columns:1fr}.connection-request{align-items:flex-start;flex-direction:column}.connection-select{align-items:flex-start;flex-direction:column}.connection-select select{width:100%;max-width:none}}
+
+/* MASSAWE ENTERPRISE — BLACK & GOLD LUXURY THEME */
+:root{font-family:Inter,system-ui,Arial,sans-serif;color:#f5eedc;background:#090909}
+body,.marketplace{background:#090909;color:#f5eedc}
+.logo{background:linear-gradient(135deg,#f8e6a4,#b8892d);color:#171109}
+.sidebar,.topbar,.panel,.auth-card,.modal,.store-chip{background:#111;border-color:#382e1b;color:#f5eedc}
+.sidebar{border-right-color:#382e1b}.brand small,.store-chip small,.user-name small,.breadcrumbs,.muted,.stat-top,.stat small,.panel-title p,td{color:#b8ad94}
+.nav{color:#c9bea4}.nav:hover,.nav.selected{background:#302613;color:#f6dc91}.count{background:#57451f;color:#f7e7b7}
+.avatar,.setup-icon{background:#332914;color:#f4d477}
+.topbar{border-bottom-color:#382e1b}
+.primary{background:linear-gradient(135deg,#f5df9a,#c39536);border-color:#d2aa50;color:#171109}
+.outline{background:#171717;border-color:#66552e;color:#ead9a8}
+.market-header{background:#0c0c0c;border-color:#382e1b}
+.market-brand b{color:#f8e6b0}.market-brand small{color:#b6a578}
+.market-hero{background:radial-gradient(circle at 78% 22%,#49391b 0,transparent 32%),linear-gradient(125deg,#080808,#17130b 65%,#080808);color:#f8f0dd}
+.market-hero h1{color:#f8e9c0}.market-hero p{color:#c5b99e}
+.hero-kicker,.promo-tag,.hero-trust{color:#dfbf67}
+.hero-art .hero-orbit{border-color:#80662e}.hero-shopping{background:linear-gradient(145deg,#e5c46e,#805d1b);color:#161109}
+.hero-float{background:#17140e;color:#f1dfac;border:1px solid #5e4a22}
+.market-promo,.market-join{background:linear-gradient(120deg,#211b0e,#111);border:1px solid #5b4820;color:#f5e6bf}
+.market-promo h2,.market-join h2{color:#f3dfaa}.market-promo p,.market-join p{color:#c5b99e}
+.market-benefits>div,.market-product,.market-empty,.payment-method-grid article{background:#121212;border-color:#3a301d;color:#f2e8d1}
+.market-benefits small,.market-product-info p,.market-product-info small,.market-empty p,.payment-method-grid small{color:#b7ad98}
+.market-product-image{background:linear-gradient(135deg,#292213,#111)}
+.market-product-info h3{color:#f5e9c9}.market-product-info>div b{color:#f1d17b}
+.market-section-head h2,.payment-preview-head h2{color:#f7e7bd}
+.market-search{background:#141414;border-color:#564724}.market-search input{background:transparent;color:#f5e8c8}
+.market-search input::placeholder{color:#a89b7c}
+.category-chips button,.saved-toggle{background:#141414;color:#d8c99f;border-color:#574827}
+.category-chips button.active,.saved-toggle.active{background:#d7b24f;color:#151109;border-color:#d7b24f}
+.cart-summary{background:#19150c;border:1px solid #604b20;color:#f4e5bd}
+.market-footer{background:#050505;border-top:1px solid #4d3c1b;color:#f2dda0}
+.market-footer small{color:#c0b28b}
+.market-product{box-shadow:0 14px 35px #0008;border-radius:5px}
+.market-product-image{height:245px}
+.market-product-image img{transition:transform .45s ease}
+.market-product:hover .market-product-image img{transform:scale(1.055)}
+.market-product-info{padding:19px}
+.market-product-info h3{font-family:Georgia,serif;font-size:18px;font-weight:500}
+.auth-page{background:#090909}.auth-card{box-shadow:0 20px 70px #000b}
+input,textarea,select{background:#171717;color:#f5e8c8;border-color:#574827}
+.toast{background:#d8b24e;color:#171109}
+@media(max-width:600px){.market-product-image{height:155px}.market-product-info{padding:12px}}
